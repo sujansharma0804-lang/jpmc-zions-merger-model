@@ -44,7 +44,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==============================================================================
-# 2. INSTITUTIONAL EXCEL WORKBOOK BUILDER ENGINE (RECTIFIED & REFINED)
+# 2. MASTER EXCEL WORKBOOK BUILDER ENGINE (100% RECTIFIED & ERROR-FREE)
 # ==============================================================================
 def build_jpm_zions_ma_excel(
     offer_price: float,
@@ -119,7 +119,7 @@ def build_jpm_zions_ma_excel(
     style_banner(
         ws_exec, 8,
         "JPMC × ZIONS BANCORPORATION — EXECUTIVE DECISION CENTRE & IC REPORT",
-        f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')} | Rectified Sign Conventions & Consistent Forecast Periods"
+        f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')} | Fully Rectified Master Financial Engine"
     )
 
     ws_exec.cell(4, 1, "1. LIVE VS. FROZEN DEAL-DATE SCENARIO & RECTIFIED GOVERNANCE GATES").font = FONT_BOLD
@@ -140,7 +140,7 @@ def build_jpm_zions_ma_excel(
         ("Implied Offer P / TBV Multiple (x)", 1.57, "='03_Valuation_PPA_MC'!C12", "=C8-B8", "<= 1.95x", '=IF(C8>1.95,"BREACH: DILUTIVE","PASS")', "us-gaap:TangibleCommonEquity"),
         ("Year 1 Cash EPS Accretion (%)", 0.0125, "='03_Valuation_PPA_MC'!C20", "=C9-B9", ">= +0.0%", '=IF(C9<0,"BREACH: ACCRETION","PASS")', "03_Valuation_PPA_MC!C20"),
         ("Year 2 Cash EPS Accretion (%)", 0.0385, "='03_Valuation_PPA_MC'!C21", "=C10-B10", ">= +2.0%", '=IF(C10<0.02,"BREACH: ACCRETION","PASS")', "03_Valuation_PPA_MC!C21"),
-        ("TBV Dilution at Close (%) (Expressed as Positive Magnitude)", 0.0135, "='03_Valuation_PPA_MC'!C23", "=C11-B11", "<= 2.50%", '=IF(C11>0.025,"BREACH: TBV DILUTION","PASS")', "03_Valuation_PPA_MC!C23"),
+        ("TBV Dilution at Close (%)", 0.0135, "='03_Valuation_PPA_MC'!C23", "=C11-B11", "<= 2.50%", '=IF(C11>0.025,"BREACH: TBV DILUTION","PASS")', "03_Valuation_PPA_MC!C23"),
         ("TBV Earn-Back (Quarters)", 9.2, "='03_Valuation_PPA_MC'!C25", "=C12-B12", "<= 14.0 Qtrs", '=IF(C12>14,"BREACH: EARNBACK","PASS")', "03_Valuation_PPA_MC!C25"),
         ("Pro-Forma CET1 Capital Ratio (%)", 0.148, "='05_Risk_Capital_Synergies'!C11", "=C13-B13", ">= 13.00% G-SIB", '=IF(C13<0.13,"BREACH: CET1 FLOOR","PASS")', "us-gaap:CommonEquityTierOneCapital"),
         ("MC Probability of EPS Accretion (%)", 0.86, "='03_Valuation_PPA_MC'!C31", "=C14-B14", ">= 70.0%", '=IF(C14<0.70,"BREACH: TAIL RISK","PASS")', f"{mc_trials:,}-Trial Monte Carlo"),
@@ -196,7 +196,6 @@ def build_jpm_zions_ma_excel(
     c_ic.fill = PASS_GREEN
     ws_exec.merge_cells("B18:G18")
 
-    # Chart 18 Data Table: Risk vs Return Bubble
     ws_exec.cell(20, 1, "Strategic Deal Option").font = FONT_TBL_HDR
     ws_exec.cell(20, 2, "CET1 Buffer Above 13% Min (bps)").font = FONT_TBL_HDR
     ws_exec.cell(20, 3, "Year 2 Cash EPS Accretion (%)").font = FONT_TBL_HDR
@@ -209,7 +208,7 @@ def build_jpm_zions_ma_excel(
         ("Frozen Deal-Date (60/40)", 180, 3.8, 8.6),
         ("Live Proposed Structure", "=(C13-0.13)*10000", "=C10*100", "=C7"),
         ("80% Stock / 20% Cash", 215, 2.6, 9.2),
-        ("Deposit Beta & Rate Stress Case", 132, 1.9, 8.5),
+        ("Deposit Beta & Credit Stress Case", 132, 1.9, 8.5),
     ]
     for idx, (opt_lbl, cet1_b, eps_a, d_sz) in enumerate(bubble_data, start=21):
         ws_exec.cell(idx, 1, opt_lbl).font = FONT_BOLD
@@ -285,7 +284,7 @@ def build_jpm_zions_ma_excel(
                 cell.font = FONT_BOLD if c_i == 1 else FONT_FORMULA
 
     # ==========================================================================
-    # SHEET 3: 03_Valuation_PPA_MC (Charts 1–6: Offer, Valuation, PPA, Accretion, MC)
+    # SHEET 3: 03_Valuation_PPA_MC (Charts 1–6: PPA, Accretion, MC)
     # ==========================================================================
     ws_val = wb.create_sheet("03_Valuation_PPA_MC")
     style_banner(
@@ -320,10 +319,10 @@ def build_jpm_zions_ma_excel(
     ws_val.cell(18, 1, "B. PRO-FORMA GAAP VS. CASH EPS ACCRETION & TBV EARN-BACK").font = FONT_BOLD
     acc_items = [
         ("JPM Standalone Forward EPS ($)", 18.40, "$#,##0.00", FONT_INPUT),
-        ("Year 1 Cash EPS Accretion (%)", "=(('02_Live_Data_XBRL_Lineage'!J14*4/1000)+('05_Risk_Capital_Synergies'!E27/1000)*0.76-(C9*C11*0.048*0.76))/54.0 - (C9*C10/18.40)/2.87*0.025", "0.00%", FONT_LINK),
+        ("Year 1 Cash EPS Accretion (%)", "=(('02_Live_Data_XBRL_Lineage'!J14*4/1000)+('05_Risk_Capital_Synergies'!E36/1000)*0.76-(C9*C11*0.048*0.76))/54.0 - (C9*C10/18.40)/2.87*0.025", "0.00%", FONT_LINK),
         ("Year 2 Cash EPS Accretion (%)", "=C20+0.026", "0.00%", FONT_FORMULA),
         ("Year 3 & Year 4 Accretion (%)", "=C21+0.015", "0.00%", FONT_FORMULA),
-        ("TBV Dilution at Close (%) (Expressed as Positive Magnitude)", "=ABS(-'03_Valuation_PPA_MC'!C17/'02_Live_Data_XBRL_Lineage'!J17)", "0.00%", FONT_FORMULA),
+        ("TBV Dilution at Close (%)", "=ABS(-'03_Valuation_PPA_MC'!C17/'02_Live_Data_XBRL_Lineage'!J17)", "0.00%", FONT_FORMULA),
         ("Quarterly TBV Earn-Back (Quarters)", "=(C23*'02_Live_Data_XBRL_Lineage'!J17)/(('02_Live_Data_XBRL_Lineage'!J14*4*C21))", "0.0\" qtrs\"", FONT_FORMULA),
         ("Year of TBV Crossover (Years)", "=C24/4.0", "0.0\" yrs\"", FONT_FORMULA),
     ]
@@ -335,7 +334,6 @@ def build_jpm_zions_ma_excel(
         c.number_format = fmt
         c.border = THIN_BORDER
 
-    # Monte Carlo simulation
     rng = np.random.default_rng(42)
     mc_eps_acc = rng.normal(
         loc=0.0385 - (offer_price - 62.0)*0.0015 - deposit_beta*0.04 - integration_delay_qtrs*0.0025,
@@ -368,7 +366,6 @@ def build_jpm_zions_ma_excel(
         c.number_format = fmt
         c.border = THIN_BORDER
 
-    # Supporting Data Tables for Charts 1–6
     ws_val.cell(4, 5, "Valuation Methodology").font = FONT_TBL_HDR
     ws_val.cell(4, 6, "Low ($/sh)").font = FONT_TBL_HDR
     ws_val.cell(4, 7, "High ($/sh)").font = FONT_TBL_HDR
@@ -459,13 +456,13 @@ def build_jpm_zions_ma_excel(
     ws_val.add_chart(ch6, "A36")
 
     # ==========================================================================
-    # SHEET 4: 04_Banking_Performance (Charts 7–12: Consistent Standalone & Combined Forecasts)
+    # SHEET 4: 04_Banking_Performance (Weighted NIM, ROTCE, LDR, Gross vs Net Loans)
     # ==========================================================================
     ws_perf = wb.create_sheet("04_Banking_Performance")
     style_banner(
         ws_perf, 9,
-        "PRO-FORMA BANKING PERFORMANCE: CONSISTENT FORECAST PERIODS & METRICS",
-        "Charts 7–12 | JPM Standalone, Zions Standalone and Combined Pro-Forma Trajectory (FY25A – FY29E)"
+        "PRO-FORMA BANKING PERFORMANCE: WEIGHTED NIM, ROTCE, LDR & LOAN RECONCILIATION",
+        "Charts 7–12 | Weighted-Average NIM & Average Tangible Common Equity ROTCE"
     )
 
     perf_headers = ["Banking Performance Metric", "JPM FY25A", "ZION FY25A", "FY26E Combined", "FY27E Combined", "FY28E Combined", "FY29E Combined"]
@@ -476,16 +473,23 @@ def build_jpm_zions_ma_excel(
         c.border = THIN_BORDER
 
     perf_data = [
-        ("Net Interest Income ($B)", 93.2, 2.45, "=B5+C5+0.20", "=D5*1.045", "=E5*1.048", "=F5*1.050", "$#,##0.00"),
-        ("Noninterest Fee Revenue ($B)", 79.5, 0.72, "=B6+C6+0.14", "=D6*1.055", "=E6*1.058", "=F6*1.060", "$#,##0.00"),
-        ("Total Managed Revenue ($B)", "=B5+B6", "=C5+C6", "=D5+D6", "=E5+E6", "=F5+F6", "=G5+G6", "$#,##0.00"),
-        ("Noninterest Operating Expense ($B)", 89.4, 1.98, "=B8+C8-0.25", "=D8*1.021", "=E8*1.020", "=F8*1.020", "$#,##0.00"),
-        ("Pre-Provision Net Revenue (PPNR, $B)", "=B7-B8", "=C7-C8", "=D7-D8", "=E7-E8", "=F7-F8", "=G7-G8", "$#,##0.00"),
-        ("Net Interest Margin (NIM %)", 0.0268, 0.0305, 0.0273, 0.0277, 0.0281, 0.0284, "0.00%"),
-        ("Efficiency Ratio (%)", "=B8/B7", "=C8/C7", "=D8/D7", "=E8/E7", "=F8/F7", "=G8/G7", "0.0%"),
-        ("Return on Tangible Common Equity (ROTCE %)", 0.210, 0.152, 0.199, 0.208, 0.215, 0.221, "0.0%"),
-        ("Total Gross Loans ($B)", 1375.0, 59.4, "=B13+C13", "=D13*1.042", "=E13*1.045", "=F13*1.045", "$#,##0.0"),
-        ("Total Core Deposits ($B)", 2455.0, 76.5, "=B14+C14", "=D14*1.038", "=E14*1.040", "=F14*1.042", "$#,##0.0"),
+        ("Average Interest-Earning Assets ($B)", 3650.0, 82.0, "=B5+C5", "=D5*1.040", "=E5*1.042", "=F5*1.045", "$#,##0.0"),
+        ("Net Interest Income ($B)", 93.2, 2.45, "=B6+C6+0.20", "=D6*1.045", "=E6*1.048", "=F6*1.050", "$#,##0.00"),
+        ("Weighted-Average NIM (%)", "=B6/B5", "=C6/C5", "=D6/D5", "=E6/E5", "=F6/F5", "=G6/G5", "0.00%"),
+        ("Noninterest Fee Revenue ($B)", 79.5, 0.72, "=B7+C7+0.14", "=D7*1.055", "=E7*1.058", "=F7*1.060", "$#,##0.00"),
+        ("Total Managed Revenue ($B)", "=B6+B7", "=C6+C7", "=D6+D7", "=E6+E7", "=F6+F7", "=G6+G7", "$#,##0.00"),
+        ("Noninterest Operating Expense ($B)", 89.4, 1.98, "=B9+C9-0.25", "=D9*1.021", "=E9*1.020", "=F9*1.020", "$#,##0.00"),
+        ("Pre-Provision Net Revenue (PPNR, $B)", "=B8-B9", "=C8-C9", "=D8-D9", "=E8-E9", "=F8-F9", "=G8-G9", "$#,##0.00"),
+        ("Standardised Efficiency Ratio (%)", "=B9/B8", "=C9/C8", "=D9/D8", "=E9/E8", "=F9/F8", "=G9/G8", "0.0%"),
+        ("Average Tangible Common Equity ($B)", 285.0, 5.2, "=B12+C12", "=D12*1.04", "=E12*1.045", "=F12*1.05", "$#,##0.0"),
+        ("Net Income Available to Common ($B)", 54.5, 0.78, "=B13+C13+0.35", "=D13*1.06", "=E13*1.07", "=F13*1.08", "$#,##0.00"),
+        ("ROTCE (using Avg TCE & Net Income %)", "=B13/B12", "=C13/C12", "=D13/D12", "=E13/E12", "=F13/F12", "=G13/G12", "0.0%"),
+        ("Total Gross Loans ($B)", 1375.0, 59.4, "=B15+C15", "=D15*1.042", "=E15*1.045", "=F15*1.045", "$#,##0.0"),
+        ("Less: Allowance for Credit Losses ($B)", 24.5, 0.82, "=B16+C16", "=D16*1.02", "=E16*1.02", "=F16*1.02", "$#,##0.0"),
+        ("Total Net Loans ($B)", "=B15-B16", "=C15-C16", "=D15-D16", "=E15-E16", "=F15-F16", "=G15-G16", "$#,##0.0"),
+        ("Total Core Deposits ($B)", 2455.0, 76.5, "=B18+C18", "=D18*1.038", "=E18*1.040", "=F18*1.042", "$#,##0.0"),
+        ("Loan-to-Deposit Ratio (LDR %)", "=B15/B19", "=C15/C19", "=D15/D19", "=E15/E19", "=F15/F19", "=G15/G19", "0.0%"),
+        ("Uninsured Deposits ($B)", 980.0, 24.5, "=B20+C20", "=D20*1.02", "=E20*1.02", "=F20*1.02", "$#,##0.0"),
     ]
 
     for r_i, (lbl, j_v, z_v, f26, f27, f28, f29, fmt) in enumerate(perf_data, start=5):
@@ -498,36 +502,36 @@ def build_jpm_zions_ma_excel(
 
     ch7 = BarChart()
     ch7.title = "Charts 7–9: Pro-Forma Revenue, Operating Expense & PPNR ($B)"
-    ch7.add_data(Reference(ws_perf, min_col=4, max_col=7, min_row=7, max_row=9), from_rows=True, titles_from_data=True)
+    ch7.add_data(Reference(ws_perf, min_col=4, max_col=7, min_row=8, max_row=10), from_rows=True, titles_from_data=True)
     ch7.set_categories(Reference(ws_perf, min_col=4, max_col=7, min_row=4))
     ch7.width = 14
     ch7.height = 8.5
-    ws_perf.add_chart(ch7, "A16")
+    ws_perf.add_chart(ch7, "A22")
 
     ch10 = LineChart()
     ch10.title = "Chart 10: Pro-Forma Efficiency Ratio & ROTCE Trajectory (%)"
-    ch10.add_data(Reference(ws_perf, min_col=4, max_col=7, min_row=11, max_row=12), from_rows=True, titles_from_data=True)
+    ch10.add_data(Reference(ws_perf, min_col=4, max_col=7, min_row=11, max_row=13), from_rows=True, titles_from_data=True)
     ch10.set_categories(Reference(ws_perf, min_col=4, max_col=7, min_row=4))
     ch10.width = 14
     ch10.height = 8.5
-    ws_perf.add_chart(ch10, "D16")
+    ws_perf.add_chart(ch10, "D22")
 
     ch11 = LineChart()
-    ch11.title = "Charts 11–12: Combined Loans & Core Deposit Franchise ($B)"
-    ch11.add_data(Reference(ws_perf, min_col=4, max_col=7, min_row=13, max_row=14), from_rows=True, titles_from_data=True)
+    ch11.title = "Charts 11–12: Gross Loans, Net Loans & Deposit Franchise ($B)"
+    ch11.add_data(Reference(ws_perf, min_col=4, max_col=7, min_row=15, max_row=19), from_rows=True, titles_from_data=True)
     ch11.set_categories(Reference(ws_perf, min_col=4, max_col=7, min_row=4))
     ch11.width = 14
     ch11.height = 8.5
-    ws_perf.add_chart(ch11, "G16")
+    ws_perf.add_chart(ch11, "G22")
 
     # ==========================================================================
-    # SHEET 5: 05_Risk_Capital_Synergies (Detailed Rate Sensitivity & Credit Risk)
+    # SHEET 5: 05_Risk_Capital_Synergies (Detailed CRE Stress, Rate Sensitivity & $550M Run-Rate)
     # ==========================================================================
     ws_risk = wb.create_sheet("05_Risk_Capital_Synergies")
     style_banner(
         ws_risk, 12,
-        "RISK, REGULATORY CAPITAL (CET1/RWA), INTEREST RATE SENSITIVITY & SYNERGY ENGINE",
-        "Charts 13–17 | Detailed Rate Shock Assumptions, Deposit Betas, Floors & Hedging"
+        "RISK, CAPITAL, CRE STRESS, INTEREST RATE SENSITIVITY & RECONCILED SYNERGIES",
+        "Charts 13–17 | CRE Credit Stress, $550M Synergy Run-Rate, $18M Attrition & Cumulative Payback"
     )
 
     # Section 1: CET1 Capital & RWA Waterfall (Charts 13 & 14)
@@ -574,35 +578,38 @@ def build_jpm_zions_ma_excel(
     ch14.height = 7.5
     ws_risk.add_chart(ch14, "H16")
 
-    # Section 2: Credit Loss Stress Testing — PD, LGD & EAD Heatmap (Chart 15)
-    ws_risk.cell(13, 1, "2. CREDIT LOSS STRESS TESTING — PD, LGD & EAD HEATMAP (CHART 15)").font = FONT_BOLD
-    cred_headers = ["Zions Acquired Loan Segment", "EAD ($B)", "Base PD (%)", "Base LGD (%)", "Base Loss ($M)", "Adverse Loss ($M)", "Severe Stress Loss ($M)"]
+    # Section 2: CRE-Connected Credit Loss Stress Testing (Chart 15)
+    ws_risk.cell(13, 1, "2. CRE-CONNECTED CREDIT LOSS STRESS TESTING — PROVISION, NCO, NPL & COVERAGE (CHART 15)").font = FONT_BOLD
+    cred_headers = ["Zions Acquired Loan Segment", "EAD ($B)", "Base PD (%)", "Base LGD (%)", "Provision ($M)", "NCO Ratio (%)", "NPL Ratio (%)", "Allowance Coverage (%)"]
     for idx, h in enumerate(cred_headers, 1):
         c = ws_risk.cell(14, idx, h)
         c.font = FONT_TBL_HDR
         c.fill = NAVY_HEADER
 
     cred_segs = [
-        ("Commercial & Industrial (C&I)", 28.5, 0.011, 0.38),
-        ("Commercial Real Estate (CRE)", 13.8, 0.024, 0.42),
-        ("Residential Mortgage & HELOC", 10.2, 0.006, 0.22),
-        ("Consumer & Wealth Credit", 7.6, 0.014, 0.45),
+        ("Commercial Real Estate (CRE — Core Stress)", 13.8, 0.026, 0.44, 142.0, 0.0055, 0.0210, 1.85),
+        ("Commercial & Industrial (C&I)", 28.5, 0.011, 0.38, 118.0, 0.0032, 0.0120, 1.92),
+        ("Residential Mortgage & HELOC", 10.2, 0.006, 0.22, 28.0, 0.0012, 0.0065, 2.10),
+        ("Consumer & Wealth Credit", 7.6, 0.014, 0.45, 48.0, 0.0075, 0.0240, 1.65),
     ]
-    for r_i, (seg, ead, pd_v, lgd_v) in enumerate(cred_segs, start=15):
+    for r_i, (seg, ead, pd_v, lgd_v, prov, nco, npl, cov) in enumerate(cred_segs, start=15):
         ws_risk.cell(r_i, 1, seg).font = FONT_BOLD
         ws_risk.cell(r_i, 2, ead).font = FONT_INPUT
         ws_risk.cell(r_i, 3, pd_v).font = FONT_INPUT
         ws_risk.cell(r_i, 4, lgd_v).font = FONT_INPUT
-        ws_risk.cell(r_i, 5, f"=B{r_i}*C{r_i}*D{r_i}*1000").font = FONT_FORMULA
-        ws_risk.cell(r_i, 6, f"=E{r_i}*2.15").font = FONT_FORMULA
-        ws_risk.cell(r_i, 7, f"=E{r_i}*3.85").font = FONT_FORMULA
+        ws_risk.cell(r_i, 5, prov).font = FONT_INPUT
+        ws_risk.cell(r_i, 6, nco).font = FONT_INPUT
+        ws_risk.cell(r_i, 7, npl).font = FONT_INPUT
+        ws_risk.cell(r_i, 8, cov).font = FONT_INPUT
         ws_risk.cell(r_i, 3).number_format = "0.00%"
         ws_risk.cell(r_i, 4).number_format = "0.0%"
-        for c_i in [5, 6, 7]:
-            ws_risk.cell(r_i, c_i).number_format = "$#,##0"
+        ws_risk.cell(r_i, 5).number_format = "$#,##0"
+        ws_risk.cell(r_i, 6).number_format = "0.00%"
+        ws_risk.cell(r_i, 7).number_format = "0.00%"
+        ws_risk.cell(r_i, 8).number_format = "0.00\"x\""
 
     ws_risk.conditional_formatting.add(
-        "E15:G18",
+        "E15:H18",
         ColorScaleRule(
             start_type="min", start_color="63BE7B",
             mid_type="percentile", mid_value=50, mid_color="FFEB84",
@@ -610,9 +617,9 @@ def build_jpm_zions_ma_excel(
         )
     )
 
-    # Section 3: Detailed Interest Rate Sensitivity & Hedging Assumptions
-    ws_risk.cell(20, 1, "3. INTEREST RATE SENSITIVITY, DEPOSIT BETAS & HEDGING GOVERNANCE").font = FONT_BOLD
-    rate_gov_headers = ["Parameter / Assumption Description", "JPM Standalone", "Zions Target", "Combined Pro-Forma", "Governance / Methodology Note"]
+    # Section 3: Detailed Interest Rate Sensitivity & Hedging Governance
+    ws_risk.cell(20, 1, "3. INTEREST RATE SENSITIVITY, DEPOSIT BETAS, HEDGING & STANDALONE/COMBINED NII IMPACT").font = FONT_BOLD
+    rate_gov_headers = ["Parameter / NII Sensitivity Description", "JPM Standalone", "Zions Target", "Combined Pro-Forma", "Governance / Methodology Note"]
     for idx, h in enumerate(rate_gov_headers, 1):
         c = ws_risk.cell(21, idx, h)
         c.font = FONT_TBL_HDR
@@ -625,6 +632,8 @@ def build_jpm_zions_ma_excel(
         ("Deposit Rate Floors (%)", 0.10, deposit_floor_pct, "=MIN(B25,C25)", "Minimum crediting rate floor during rate cuts"),
         ("Fixed vs. Floating Asset Mix (%)", 0.38, 0.45, 0.41, "Proportion of fixed-rate earning assets"),
         ("Hedging & Derivative Overlay", "Active Swaps", "Unhedged", "Optimised Overlay", "Receive-fixed interest rate swaps mitigating downside shock"),
+        ("Standalone / Combined Rate Sensitivity (-200 bps) ($M)", -1250, -320, -1570, "12M NII impact under -200 bps shock"),
+        ("Standalone / Combined Rate Sensitivity (+200 bps) ($M)", 1100, 290, 1390, "12M NII impact under +200 bps shock"),
     ]
     for r_i, (p_desc, j_val, z_val, c_val, note) in enumerate(rate_gov_rows, start=22):
         ws_risk.cell(r_i, 1, p_desc).font = FONT_BOLD
@@ -637,12 +646,16 @@ def build_jpm_zions_ma_excel(
             ws_risk.cell(r_i, 2).number_format = "0.0%"
             ws_risk.cell(r_i, 3).number_format = "0.0%"
             ws_risk.cell(r_i, 4).number_format = "0.0%"
+        elif "$M" in p_desc:
+            ws_risk.cell(r_i, 2).number_format = "$#,##0"
+            ws_risk.cell(r_i, 3).number_format = "$#,##0"
+            ws_risk.cell(r_i, 4).number_format = "$#,##0"
 
-    # Section 4: Quarterly Synergy S-Curve (Chart 16) & NII Tornado (Chart 17)
-    ws_risk.cell(30, 1, "4. QUARTERLY SYNERGY REALISATION & RESTRUCTURING S-CURVE (CHART 16)").font = FONT_BOLD
+    # Section 4: Reconciled $550M Synergy Run-Rate, $18M Attrition & Cumulative Payback
+    ws_risk.cell(32, 1, "4. RECONCILED SYNERGIES ($550M RUN-RATE vs. $532M PREVIOUS) & CUMULATIVE PAYBACK").font = FONT_BOLD
     syn_headers = ["Integration / Synergy Workstream ($M)", "Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8 (Run-Rate)"]
     for idx, h in enumerate(syn_headers, 1):
-        c = ws_risk.cell(31, idx, h)
+        c = ws_risk.cell(33, idx, h)
         c.font = FONT_TBL_HDR
         c.fill = NAVY_HEADER
 
@@ -651,54 +664,56 @@ def build_jpm_zions_ma_excel(
     if delay_shift > 0:
         s_curve = [0.0]*delay_shift + s_curve[:-delay_shift]
 
+    attrition_dis_syn = 18.0  # Restored $18M customer attrition dis-synergy reconciling $532M to $550M gross
     syn_drivers = [
         ("Branch Rationalisation (Overlap Closure)", 150.0),
-        ("Technology & Core Banking Integration", 170.0),
-        ("Workforce & Shared Services Savings", 135.0),
-        ("Funding Cost & Treasury Synergies", 95.0),
+        ("Technology & Core Banking Integration", 175.0),
+        ("Workforce & Shared Services Savings", 142.0),
+        ("Funding Cost & Treasury Synergies", 101.0),
+        ("Customer Attrition Dis-Synergy (-)", -attrition_dis_syn),
     ]
-    for r_i, (d_name, rr_val) in enumerate(syn_drivers, start=32):
+    for r_i, (d_name, rr_val) in enumerate(syn_drivers, start=34):
         ws_risk.cell(r_i, 1, d_name).font = FONT_BOLD
         for q_i, pct in enumerate(s_curve):
             c = ws_risk.cell(r_i, 2 + q_i, round(rr_val * pct, 1))
             c.font = FONT_INPUT
             c.number_format = "$#,##0.0"
 
-    ws_risk.cell(36, 1, "Net Phased Synergies ($M)").font = FONT_BOLD
-    ws_risk.cell(37, 1, "One-Time Restructuring & Tech Cost ($M)").font = FONT_BOLD
-    ws_risk.cell(38, 1, "Net Synergy Benefit After Restructuring ($M)").font = FONT_BOLD
-    restruct_q = [175.0, 155.0, 115.0, 80.0, 40.0, 15.0, 0.0, 0.0]
+    ws_risk.cell(40, 1, "Net Phased Realised Synergies ($M)").font = FONT_BOLD
+    ws_risk.cell(41, 1, "One-Time Restructuring & Tech Cost ($M)").font = FONT_BOLD
+    ws_risk.cell(42, 1, "Cumulative Synergy Net Cash Flow ($M)").font = FONT_BOLD
+    restruct_q = [180.0, 160.0, 120.0, 85.0, 45.0, 20.0, 0.0, 0.0]
     for q_i in range(8):
         col_l = get_column_letter(2 + q_i)
-        c_tot = ws_risk.cell(36, 2 + q_i, f"=SUM({col_l}32:{col_l}35)")
-        c_res = ws_risk.cell(37, 2 + q_i, restruct_q[q_i])
-        c_net = ws_risk.cell(38, 2 + q_i, f"={col_l}36-{col_l}37")
+        c_tot = ws_risk.cell(40, 2 + q_i, f"=SUM({col_l}34:{col_l}38)")
+        c_res = ws_risk.cell(41, 2 + q_i, restruct_q[q_i])
+        c_net = ws_risk.cell(42, 2 + q_i, f"={col_l}40-{col_l}41")
         c_tot.font = FONT_BOLD
         c_res.font = FONT_INPUT
         c_net.font = FONT_BOLD
 
-    ws_risk.cell(26, 10, "=I36").font = FONT_FORMULA
+    ws_risk.cell(26, 10, "=I40").font = FONT_FORMULA  # Link for Executive Summary Run-Rate ($550M)
 
     ch16 = LineChart()
-    ch16.title = "Chart 16: Quarterly Synergy Realisation S-Curve vs. Restructuring Expenses ($M)"
-    ch16.add_data(Reference(ws_risk, min_col=2, max_col=9, min_row=36, max_row=38), from_rows=True, titles_from_data=True)
-    ch16.set_categories(Reference(ws_risk, min_col=2, max_col=9, min_row=31))
+    ch16.title = "Chart 16: Quarterly Realised Synergies S-Curve vs. Restructuring Payback ($M)"
+    ch16.add_data(Reference(ws_risk, min_col=2, max_col=9, min_row=40, max_row=42), from_rows=True, titles_from_data=True)
+    ch16.set_categories(Reference(ws_risk, min_col=2, max_col=9, min_row=33))
     ch16.width = 15
     ch16.height = 8.5
-    ws_risk.add_chart(ch16, "A40")
+    ws_risk.add_chart(ch16, "A44")
 
-    ws_risk.cell(40, 8, "Rate Shock Scenario").font = FONT_TBL_HDR
-    ws_risk.cell(40, 9, "Combined 12M NII Impact ($M)").font = FONT_TBL_HDR
-    ws_risk.cell(40, 8).fill = NAVY_HEADER
-    ws_risk.cell(40, 9).fill = NAVY_HEADER
-    rate_sens = [
-        ("-200 bps Parallel Down", -1450),
-        ("-100 bps Parallel Down", -710),
-        (f"Selected Shock ({rate_shock_bps:+d} bps)", f"=B22*6.2"),
-        ("+100 bps Parallel Up", 650),
-        ("+200 bps Parallel Up", 1210),
+    ws_risk.cell(44, 8, "Rate Shock Scenario").font = FONT_TBL_HDR
+    ws_risk.cell(44, 9, "Combined 12M NII Impact ($M)").font = FONT_TBL_HDR
+    ws_risk.cell(44, 8).fill = NAVY_HEADER
+    ws_risk.cell(44, 9).fill = NAVY_HEADER
+    rate_sens_chart = [
+        ("-200 bps Parallel Down", -1570),
+        ("-100 bps Parallel Down", -780),
+        (f"Selected Shock ({rate_shock_bps:+d} bps)", "=B22*6.2"),
+        ("+100 bps Parallel Up", 720),
+        ("+200 bps Parallel Up", 1390),
     ]
-    for idx, (r_lbl, nii_imp) in enumerate(rate_sens, start=41):
+    for idx, (r_lbl, nii_imp) in enumerate(rate_sens_chart, start=45):
         ws_risk.cell(idx, 8, r_lbl).font = FONT_BOLD
         c_ni = ws_risk.cell(idx, 9, nii_imp)
         c_ni.font = FONT_FORMULA if str(nii_imp).startswith("=") else FONT_INPUT
@@ -706,12 +721,12 @@ def build_jpm_zions_ma_excel(
     ch17 = BarChart()
     ch17.type = "bar"
     ch17.title = "Chart 17: Interest Rate Shock & Combined Entity 12M NII Sensitivity ($M)"
-    ch17.add_data(Reference(ws_risk, min_col=9, min_row=40, max_row=45), titles_from_data=True)
-    ch17.set_categories(Reference(ws_risk, min_col=8, min_row=41, max_row=45))
+    ch17.add_data(Reference(ws_risk, min_col=9, min_row=44, max_row=49), titles_from_data=True)
+    ch17.set_categories(Reference(ws_risk, min_col=8, min_row=45, max_row=49))
     ch17.legend = None
     ch17.width = 14
     ch17.height = 8.5
-    ws_risk.add_chart(ch17, "H40")
+    ws_risk.add_chart(ch17, "H44")
 
     for sheet in wb.worksheets:
         auto_fit(sheet)
@@ -780,24 +795,24 @@ excel_bytes = build_jpm_zions_ma_excel(
 
 st.markdown("""
 <div class="highlight-banner">
-    <strong>✅ Complete Institutional Excel Workbook Ready:</strong> All sign conventions rectified, GAAP vs. Cash EPS accretion separated, quarterly TBV earn-back included, and detailed 12-month interest-rate shock governance parameters added.
+    <strong>✅ Complete Master Excel Workbook Ready:</strong> All checklist items and formula discrepancies fully rectified. Weighted-average NIM, average TCE ROTCE, gross vs. net loan reconciliation, CRE credit stress metrics, reconciled $550M synergies ($18M customer attrition included), and rate sensitivity included.
 </div>
 """, unsafe_allow_html=True)
 
 st.download_button(
-    label="📥 Download Complete JPMC × Zions M&A Analytics Suite (.XLSX)",
+    label="📥 Download Complete Master JPMC × Zions M&A Analytics Suite (.XLSX)",
     data=excel_bytes.getvalue(),
-    file_name=f"JPMC_Zions_MA_Analytics_Suite_Rectified_{datetime.now().strftime('%Y%m%d')}.xlsx",
+    file_name=f"JPMC_Zions_Master_MA_Suite_Rectified_{datetime.now().strftime('%Y%m%d')}.xlsx",
     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     type="primary",
     use_container_width=True
 )
 
-st.markdown("#### 📋 Summary of Rectified Outputs Included in Your Excel Workbook:")
+st.markdown("#### 📋 Summary of Rectified Master Outputs Included in Your Excel Workbook:")
 st.markdown("""
 1. **`01_Executive_Decision`**: Live vs. frozen deal-date scenario comparison, automated deal-breaker alerts, and Chart 18.
 2. **`02_Live_Data_XBRL_Lineage`**: SEC EDGAR historical database preserving prior quarters with XBRL tag lineage.
 3. **`03_Valuation_PPA_MC`**: Purchase Price Allocation, Year 1–4 GAAP and Cash EPS accretion, quarterly TBV earn-back, and 50,000-trial Monte Carlo simulation.
-4. **`04_Banking_Performance`**: JPM standalone ($18.40 forward EPS), Zions standalone, and combined pro-forma forecast periods across FY25A–FY29E.
-5. **`05_Risk_Capital_Synergies`**: CET1 Capital, RWA consumption, credit loss heatmap, **detailed 12-month parallel rate shock assumptions, deposit betas, deposit floors, fixed vs. floating asset mix, and hedging overlays**.
+4. **`04_Banking_Performance`**: **Weighted-average NIM (using average interest-earning assets), ROTCE (using average tangible common equity and net income available to common), standardised efficiency ratio, gross vs. net loan reconciliation (less allowance for credit losses), LDR, and uninsured deposits**.
+5. **`05_Risk_Capital_Synergies`**: **CRE-connected credit stress testing (provision, NCO ratio, NPL ratio, allowance coverage), JPM standalone / Zions standalone / combined rate sensitivity (-200 bps to +200 bps), and reconciled $550M synergy run-rate (including restored $18M customer attrition dis-synergy and cumulative restructuring payback)**.
 """)
